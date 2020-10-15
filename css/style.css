@@ -1,0 +1,149 @@
+:root {
+    /* MUI COLORS */
+    --grey-50: #FAFAFA;
+    --grey-100: #F5F5F5;
+    --grey-200: #EEEEEE;
+    --grey-300: #E0E0E0;
+    --grey-400: #BDBDBD;
+    --grey-500: #9E9E9E;
+    --grey-600: #757575;
+    --grey-700: #616161;
+    --grey-800: #424242;
+    --grey-900: #212121;
+
+    --deeporange-50: #FBE9E7;
+    --deeporange-100: #FFCCBC;
+    --deeporange-200: #FFAB91;
+    --deeporange-300: #FF8A65;
+    --deeporange-400: #FF7043;
+    --deeporange-500: #FF5722;
+    --deeporange-600: #F4511E;
+    --deeporange-700: #E64A19;
+    --deeporange-800: #D84315;
+    --deeporange-900: #BF360C;
+}
+
+html {
+    font-size: 24px;
+    font-weight: 300;
+    font-family: "Roboto", Arial, Helvetica, sans-serif;   
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: rgb(34,193,195);
+    background: linear-gradient(90deg, rgba(34,193,195,1) 0%, rgba(108,204,106,1) 50%, rgba(253,187,45,1) 100%);
+}
+
+.calculator {
+    box-shadow: 0 0 25px 0 rgba(0,0,0,1);
+    width: 16.25rem;
+    border-radius: 0.5em;
+    overflow: hidden;
+}
+
+.calculator__display {
+    background-color: var(--grey-900);
+    color: var(--grey-200);
+    padding: 0.7rem 1rem;
+    text-align: right;
+    font-size: 2rem;
+}
+
+.calculator__keys {
+    background: var(--grey-500);
+    display: grid;
+    grid-gap: 2px;
+    grid-template-columns: repeat(4,auto);
+    grid-template-areas: 
+        ". . . . "
+        "seven eight nine equal"
+        "four five six equal"
+        "one two three equal"
+        "zero decimal clear equal";
+}
+
+.calculator__keys > button {
+    border: 0;
+}
+
+.one {
+    grid-area: one;
+}
+
+.two {
+    grid-area: two;
+}
+
+.three {
+    grid-area: three;
+}
+
+.four {
+    grid-area: four;
+}
+
+.five {
+    grid-area: five;
+}
+
+.six {
+    grid-area: six;
+}
+
+.seven {
+    grid-area: seven;
+}
+
+.eight {
+    grid-area: eight;
+}
+
+.nine {
+    grid-area: nine;
+}
+
+.zero {
+    grid-area: zero;
+}
+
+.decimal {
+    grid-area: decimal;
+}
+
+.clear {
+    grid-area: clear;
+}
+
+.equal {
+    grid-area: equal;
+    background-color: var(--deeporange-400);
+}
+
+.equal:hover,
+.equal:focus {
+    background-color: var(--deeporange-500);
+}
+
+[data-type="operator"] {
+    background-color: var(--grey-300);
+}
+
+[data-type="operator"]:hover {
+    background-color: var(--grey-4500);
+}
+
+[data-type="number"] {
+    background-color: var(--grey-200);
+}
+
+[data-type="number"]:hover {
+    background-color: var(--grey-300);
+}
+
+[data-state="selected"] {
+    background-color: var(--deeporange-200);
+}
