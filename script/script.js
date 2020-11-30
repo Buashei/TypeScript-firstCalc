@@ -1,5 +1,6 @@
 var keys = document.querySelector('.calculator__keys');
 var display = document.querySelector('.calculator__display');
+var operatorKeys = document.querySelectorAll('[data-type="operator"]');
 var state = {
     previousKeyType: "",
     firstNumber: "",
@@ -15,8 +16,8 @@ keys.addEventListener('click', function (event) {
         return;
     if (type === 'number') {
         if (key.className === "clear") {
-            clearLocalState();
-            clearOperationKeyState();
+            clearLocalState(state);
+            clearOperationKeyState(operatorKeys);
             display.textContent = "0";
             return;
         }
@@ -29,7 +30,7 @@ keys.addEventListener('click', function (event) {
         state.previousKeyType = type;
     }
     if (type === 'operator') {
-        clearOperationKeyState();
+        clearOperationKeyState(operatorKeys);
         key.dataset.state = 'selected';
         state.firstNumber = displayValue;
         state.operator = key.className;
@@ -37,31 +38,30 @@ keys.addEventListener('click', function (event) {
     if (type === 'equal') {
         var firstNumber = state.firstNumber, secondNumber = state.secondNumber, operator = state.operator;
         secondNumber = displayValue;
-        display.textContent = calculate(firstNumber, operator, secondNumber);
+        display.textContent = calculate(firstNumber, operator, secondNumber).toString();
         if (!firstNumber || !operator || !secondNumber) {
             display.textContent = displayValue;
         }
-        clearOperationKeyState();
-        clearLocalState();
+        clearOperationKeyState(operatorKeys);
+        clearLocalState(state);
     }
     state.previousKeyType = type;
 });
-var clearOperationKeyState = function () {
-    var operatorKeys = keys.querySelectorAll('[data-type="operator"]');
+var clearOperationKeyState = function (operatorKeys) {
     operatorKeys.forEach(function (operatorKey) {
         if (operatorKey instanceof HTMLElement) {
-            operatorKey.dataset.stat = '';
+            operatorKey.dataset.state = '';
         }
     });
 };
-var clearLocalState = function () {
+var clearLocalState = function (state) {
     for (var key in state) {
         delete state[key];
     }
 };
-function calculate(firstNumber, operator, secondNumber) {
-    firstNumber = parseInt(firstNumber);
-    secondNumber = parseInt(secondNumber);
+var calculate = function (firstNumberInString, operator, secondNumberInString) {
+    var firstNumber = +firstNumberInString;
+    var secondNumber = +secondNumberInString;
     if (operator === 'plus')
         return firstNumber + secondNumber;
     if (operator === 'minus')
@@ -70,4 +70,4 @@ function calculate(firstNumber, operator, secondNumber) {
         return firstNumber * secondNumber;
     if (operator === 'divide')
         return firstNumber / secondNumber;
-}
+};

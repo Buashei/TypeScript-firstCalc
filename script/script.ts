@@ -1,5 +1,6 @@
 const keys = document.querySelector('.calculator__keys');
 const display = document.querySelector('.calculator__display');
+const operatorKeys = document.querySelectorAll('[data-type="operator"]');
 
 let state = {
     previousKeyType: "",
@@ -19,8 +20,8 @@ keys.addEventListener('click', event => {
     
     if(type === 'number'){
         if(key.className === "clear") {
-            clearLocalState();
-            clearOperationKeyState();
+            clearLocalState(state);
+            clearOperationKeyState(operatorKeys);
             display.textContent = "0";
             return;
         }
@@ -33,7 +34,7 @@ keys.addEventListener('click', event => {
     }
 
     if(type === 'operator') {
-    clearOperationKeyState()
+    clearOperationKeyState(operatorKeys)
     key.dataset.state = 'selected';
     state.firstNumber = displayValue;
     state.operator = key.className;
@@ -42,33 +43,32 @@ keys.addEventListener('click', event => {
     if(type === 'equal') {
         let { firstNumber, secondNumber, operator } = state;
         secondNumber = displayValue;
-        display.textContent = calculate(firstNumber, operator, secondNumber);
+        display.textContent = calculate(firstNumber, operator, secondNumber).toString();
         if(!firstNumber || !operator || !secondNumber){ display.textContent = displayValue; }
-        clearOperationKeyState()
-        clearLocalState()
+        clearOperationKeyState(operatorKeys)
+        clearLocalState(state);
     }
     state.previousKeyType = type;
 
 })
 
-const clearOperationKeyState = () => {
-    const operatorKeys = keys.querySelectorAll('[data-type="operator"]');
+const clearOperationKeyState = (operatorKeys): void => {
     operatorKeys.forEach(operatorKey => {
         if(operatorKey instanceof HTMLElement){
-            operatorKey.dataset.stat = '' 
+            operatorKey.dataset.state = '' 
         } 
     });
 }
 
-const clearLocalState = () => {
+const clearLocalState = (state: Object): void => {
     for (var key in state) {
           delete state[key];
     }
 }
 
-function calculate (firstNumber, operator, secondNumber) {
-    firstNumber = parseInt(firstNumber)
-    secondNumber = parseInt(secondNumber)
+const calculate = (firstNumberInString: string, operator: string, secondNumberInString: string): number => {
+    const firstNumber: number = +firstNumberInString
+    const secondNumber: number = +secondNumberInString
     if (operator === 'plus') return firstNumber + secondNumber;
     if (operator === 'minus') return firstNumber - secondNumber;
     if (operator === 'times') return firstNumber * secondNumber;
